@@ -16,8 +16,8 @@ then I'll check it and consider to remove this repository in github and npm.
 
 ### JobQueue(\[dependencies])
 
-### JobManager(\[jobResolver])
+### JobManager(jobResolver)
 
-#### AddJobQueue(identifier, jobQueue)
+#### addJobQueue(identifier, jobQueue)
 
-#### EnqueueJob(jobQueueIdentifier, pendingJob)
+#### enqueueJob(jobQueueIdentifier, pendingJob)
