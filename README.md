@@ -16,7 +16,7 @@ then I'll check it and consider to remove this repository in github and npm.
 
 ### JobQueue(\[dependencies])
 
-### JobManager(jobResolver)
+### JobManager(\[obResolver])
 
 #### addJobQueue(identifier, jobQueue)
 
