@@ -34,30 +34,28 @@ export default class JobQueue {
   enqueueJob(pendingJob) {
     const { reservedTime } = pendingJob;
     const packedPendingJobsQueue = this._packedPendingJobsQueue;
+    let currentIndex = packedPendingJobsQueue.length - 1;
+    let inserted = false;
 
-    if (packedPendingJobsQueue.length === 0) {
-      const packedPendingJobs = new PackedPendingJobs(reservedTime, pendingJob);
+    while (!inserted) {
+      const currentPackedPendingJob = packedPendingJobsQueue[currentIndex];
 
-      packedPendingJobsQueue.push(packedPendingJobs);
-    } else {
-      let currentIndex = packedPendingJobsQueue.length - 1;
-      let inserted = false;
+      if (currentPackedPendingJob === undefined) {
+        const packedPendingJobs = new PackedPendingJobs(reservedTime, pendingJob);
 
-      while (!inserted) {
-        const currentPackedPendingJob = packedPendingJobsQueue[currentIndex];
+        packedPendingJobsQueue.push(packedPendingJobs);
+        inserted = true;
+      } else if (currentPackedPendingJob.reservedTime === reservedTime) {
+        currentPackedPendingJob.insertPendingJob(pendingJob);
+        inserted = true;
+      } else if (currentPackedPendingJob.reservedTime < reservedTime) {
+        const packedPendingJobs = new PackedPendingJobs(reservedTime, pendingJob);
+        const insertPosition = currentIndex + 1;
 
-        if (currentPackedPendingJob.reservedTime === reservedTime) {
-          currentPackedPendingJob.insertPendingJob(pendingJob);
-          inserted = true;
-        } else if (currentPackedPendingJob.reservedTime < reservedTime) {
-          const packedPendingJobs = new PackedPendingJobs(reservedTime, pendingJob);
-          const insertPosition = currentIndex + 1;
-
-          packedPendingJobsQueue.splice(insertPosition, 0 , packedPendingJobs);
-          inserted = true;
-        }
-        currentIndex -= 1;
+        packedPendingJobsQueue.splice(insertPosition, 0 , packedPendingJobs);
+        inserted = true;
       }
+      currentIndex -= 1;
     }
   }
 
