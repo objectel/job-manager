@@ -70,4 +70,11 @@ export default class JobQueue {
     if (pendingJobs.length === 0) packedPendingJobsQueue.shift();
     return pendingJob;
   }
+
+  get nextReservedTime() {
+    const packedPendingJobsQueue = this._packedPendingJobsQueue;
+    const packedPendingJobs = packedPendingJobsQueue[0];
+
+    return packedPendingJobs.reservedTime;
+  }
 };
