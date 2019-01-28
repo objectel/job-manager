@@ -8,6 +8,8 @@ then I'll check it and consider to remove this repository in github and npm.
 
 ## API
 
+> **NOTICE**: dependency of PendingJob is future feature. it is not supported yet.
+
 ### Job
 
 ### PendingJob(job, \[priority], \[reservedTime], \[dependencies])
