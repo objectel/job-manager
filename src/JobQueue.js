@@ -1,6 +1,6 @@
 export default class JobQueue {
   constructor(dependencies = {}) {
-    this._queue = [];
+    this._queue = []; // @TODO: do optimization via numeral system
   }
 
   enqueueJob(pendingJob) {
