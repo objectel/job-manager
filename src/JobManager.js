@@ -19,6 +19,8 @@ export default class JobManager {
   constructor(jobResolver = defaultJobResolver) {
     this._jobQueueMap = new Map();
     this.time = 0;
+
+    setTimeout(jobResolver, 0, this);
     setInterval(() => {
       this.time += 10;
       jobResolver(this);
