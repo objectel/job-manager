@@ -27,4 +27,10 @@ export default class JobQueue {
 
     return jobQueue.shift();
   }
+
+  get oldestPendingJob() {
+    const jobQueue = this._queue;
+
+    return jobQueue[0] || null;
+  }
 };
