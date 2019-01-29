@@ -1,7 +1,7 @@
 function defaultJobResolver(jobManager) {
   const time = jobManager.time;
 
-  for (const jobQueue of jobManager) {
+  for (const [_, jobQueue] of jobManager) {
     const nextReservedTime = jobQueue.nextReservedTime;
 
     if (time === nextReservedTime) {
@@ -42,9 +42,9 @@ export default class JobManager {
     return this;
   }
 
-  get [Symbol.iterator]() {
+  * [Symbol.iterator]() {
     const jobQueueMap = this._jobQueueMap;
 
-    return jobQueueMap[Symbol.iterator];
+    yield* jobQueueMap[Symbol.iterator]();
   }
 }
