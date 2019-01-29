@@ -10,14 +10,18 @@ class PackedPendingJobs {
     let inserted = false;
 
     while(!inserted) {
-      const currentPendingJob = pendingJob[currentIndex];
+      const currentPendingJob = pendingJobs[currentIndex];
 
-      if (currentPendingJob.priority >= pendingJob) {
+      if (currentPendingJob === undefined) {
+        pendingJobs.unshift(pendingJob);
+        inserted = true;
+      } else if (currentPendingJob.priority >= pendingJob) {
         const insertPosition = currentIndex + 1;
 
         pendingJobs.splice(insertPosition, 0, pendingJob);
         inserted = true;
       }
+      currentIndex -= 1;
     }
   }
 
@@ -43,7 +47,7 @@ export default class JobQueue {
       if (currentPackedPendingJob === undefined) {
         const packedPendingJobs = new PackedPendingJobs(reservedTime, pendingJob);
 
-        packedPendingJobsQueue.push(packedPendingJobs);
+        packedPendingJobsQueue.unshift(packedPendingJobs);
         inserted = true;
       } else if (currentPackedPendingJob.reservedTime === reservedTime) {
         currentPackedPendingJob.insertPendingJob(pendingJob);
@@ -73,6 +77,6 @@ export default class JobQueue {
     const packedPendingJobsQueue = this._packedPendingJobsQueue;
     const packedPendingJobs = packedPendingJobsQueue[0];
 
-    return packedPendingJobs.reservedTime;
+    return packedPendingJobsQueue.length ? packedPendingJobs.reservedTime : -1;
   }
 };
